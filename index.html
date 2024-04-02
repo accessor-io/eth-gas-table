@@ -1,0 +1,257 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Storage Slots Cost Table</title>
+<style>
+ table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: monospace;
+}
+
+th, td {
+  border: 1px solid #ddd; /* Light gray border */
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  background-color: #f2f7fd; /* Light blue background for header */
+  color: #333; /* Dark text color for header */
+  border-bottom: 2px solid #ddd; /* 2px bottom border for header */
+}
+
+tr:nth-child(even) {
+  background-color: #eaf4fd; /* Lighter blue background for even rows */
+}
+
+tr:hover {
+  background-color: #d2e4fc; /* Slightly darker blue background on hover */
+}
+
+.loading {
+  display: none;
+}
+
+.no-data {
+  font-style: italic;
+  color: #666;
+}
+
+.pagination {
+  margin-top: 10px;
+}
+
+.pagination select {
+  padding: 5px;
+  font-size: 16px;
+}
+
+</style>
+</head>
+<body>
+    <div>
+        <button onclick="updateTable()">Refresh</button>
+        <span class="loading">Loading...</span>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th onclick="sortTable('gasPrice')">Gas Price (Gwei)</th>
+                <th onclick="sortTable('usdCost')">Cost (USD)</th>
+                <th onclick="sortTable('ethCost')">Cost (ETH)</th>
+                <th onclick="sortTable('slots')">Slots</th>
+                <th onclick="sortTable('bytes')">Bytes</th>
+                <th onclick="sortTable('sloadGas')">SLOAD (Gas)</th>
+                <th onclick="sortTable('sstoreGas')">SSTORE (Gas)</th>
+                <th onclick="sortTable('totalGas')">Total (Gas)</th>
+                <th onclick="sortTable('totalCost')">Total Cost</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+        </tbody>
+    </table>
+    <div>
+    
+    </div>
+
+    <script>
+        const table = document.querySelector('table');
+        const tableBody = table.querySelector('tbody');
+        const loadingIndicator = document.querySelector('.loading');
+        const noDataMessage = document.createElement('tr');
+        noDataMessage.innerHTML = '<td colspan="9" class="no-data">No data available</td>';
+
+        let ethereumPrice = 0;
+        let currentPage = 1;
+        let rowsPerPage = 10;
+        let selectedRow = null;
+
+        function fetchEthereumPrice() {
+            fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd')
+                .then(response => response.json())
+                .then(prices => {
+                    ethereumPrice = prices.ethereum.usd;
+                    updateTable();
+                })
+                .catch(error => {
+                    console.error('Failed to fetch Ethereum price:', error);
+                });
+        }
+
+        function updateTable() {
+            loadingIndicator.style.display = 'inline';
+            // Use ethereumPrice to calculate and render the table
+            // This part is where you would calculate the storage slot costs based on the ethereumPrice
+            // and render the table rows accordingly
+            // For the sake of this example, let's assume you have the data ready in the correct format
+            const data = [
+
+    { gasPrice: 10, slots: 1, bytes: 32, SLOAD: 200, SSTORE: 10000, totalGas: 10200 },
+    { gasPrice: 10, slots: 2, bytes: 64, SLOAD: 400, SSTORE: 20000, totalGas: 20400 },
+    { gasPrice: 10, slots: 3, bytes: 96, SLOAD: 600, SSTORE: 30000, totalGas: 30600 },
+    { gasPrice: 10, slots: 4, bytes: 128, SLOAD: 800, SSTORE: 40000, totalGas: 40200 },
+    { gasPrice: 10, slots: 5, bytes: 160, SLOAD: 1000, SSTORE: 50000, totalGas: 51000 },
+    { gasPrice: 10, slots: 6, bytes: 192, SLOAD: 1200, SSTORE: 60000, totalGas: 61200 },
+    { gasPrice: 10, slots: 7, bytes: 224, SLOAD: 1400, SSTORE: 70000, totalGas: 71400 },
+    { gasPrice: 10, slots: 8, bytes: 256, SLOAD: 1600, SSTORE: 80000, totalGas: 81600 },
+    { gasPrice: 10, slots: 9, bytes: 288, SLOAD: 1800, SSTORE: 90000, totalGas: 91800 },
+    { gasPrice: 10, slots: 10, bytes: 320, SLOAD: 2000, SSTORE: 100000, totalGas: 102000 },
+    { gasPrice: 10, slots: 11, bytes: 352, SLOAD: 2200, SSTORE: 110000, totalGas: 112200 },
+    { gasPrice: 10, slots: 12, bytes: 384, SLOAD: 2400, SSTORE: 120000, totalGas: 122400 },
+    { gasPrice: 10, slots: 13, bytes: 416, SLOAD: 2600, SSTORE: 130000, totalGas: 132600 },
+    { gasPrice: 10, slots: 14, bytes: 448, SLOAD: 2800, SSTORE: 140000, totalGas: 142800 },
+    { gasPrice: 10, slots: 15, bytes: 480, SLOAD: 3000, SSTORE: 150000, totalGas: 153000 },
+    { gasPrice: 10, slots: 16, bytes: 512, SLOAD: 3200, SSTORE: 160000, totalGas: 163200 },
+    { gasPrice: 20, slots: 1, bytes: 32, SLOAD: 200, SSTORE: 10000, totalGas: 20200 },
+    { gasPrice: 20, slots: 2, bytes: 64, SLOAD: 400, SSTORE: 20000, totalGas: 20400 },
+    { gasPrice: 20, slots: 3, bytes: 96, SLOAD: 600, SSTORE: 30000, totalGas: 30600 },
+    { gasPrice: 20, slots: 4, bytes: 128, SLOAD: 800, SSTORE: 40000, totalGas: 40200 },
+    { gasPrice: 20, slots: 5, bytes: 160, SLOAD: 1000, SSTORE: 50000, totalGas: 51000 },
+    { gasPrice: 20, slots: 6, bytes: 192, SLOAD: 1200, SSTORE: 60000, totalGas: 61200 },
+    { gasPrice: 20, slots: 7, bytes: 224, SLOAD: 1400, SSTORE: 70000, totalGas: 71400 },
+    { gasPrice: 20, slots: 8, bytes: 256, SLOAD: 1600, SSTORE: 80000, totalGas: 81600 },
+    { gasPrice: 20, slots: 9, bytes: 288, SLOAD: 1800, SSTORE: 90000, totalGas: 91800 },
+    { gasPrice: 20, slots: 10, bytes: 320, SLOAD: 2000, SSTORE: 100000, totalGas: 102000 },
+    { gasPrice: 20, slots: 11, bytes: 352, SLOAD: 2200, SSTORE: 110000, totalGas: 112200 },
+    { gasPrice: 20, slots: 12, bytes: 384, SLOAD: 2400, SSTORE: 120000, totalGas: 122400 },
+    { gasPrice: 20, slots: 13, bytes: 416, SLOAD: 2600, SSTORE: 130000, totalGas: 132600 },
+    { gasPrice: 20, slots: 14, bytes: 448, SLOAD: 2800, SSTORE: 140000, totalGas: 142800 },
+    { gasPrice: 20, slots: 15, bytes: 480, SLOAD: 3000, SSTORE: 150000, totalGas: 153000 },
+    { gasPrice: 20, slots: 16, bytes: 512, SLOAD: 3200, SSTORE: 160000, totalGas: 163200 },
+    { gasPrice: 30, slots: 1, bytes: 32, SLOAD: 200, SSTORE: 10000, totalGas: 30200 },
+    { gasPrice: 30, slots: 2, bytes: 64, SLOAD: 400, SSTORE: 20000, totalGas: 30400 },
+    { gasPrice: 30, slots: 3, bytes: 96, SLOAD: 600, SSTORE: 30000, totalGas: 30600 },
+    { gasPrice: 30, slots: 4, bytes: 128, SLOAD: 800, SSTORE: 40000, totalGas: 40200 },
+    { gasPrice: 30, slots: 5, bytes: 160, SLOAD: 1000, SSTORE: 50000, totalGas: 51000 },
+    { gasPrice: 30, slots: 6, bytes: 192, SLOAD: 1200, SSTORE: 60000, totalGas: 61200 },
+    { gasPrice: 30, slots: 7, bytes: 224, SLOAD: 1400, SSTORE: 70000, totalGas: 71400 },
+    { gasPrice: 30, slots: 8, bytes: 256, SLOAD: 1600, SSTORE: 80000, totalGas: 81600 },
+    { gasPrice: 30, slots: 9, bytes: 288, SLOAD: 1800, SSTORE: 90000, totalGas: 91800 },
+    { gasPrice: 30, slots: 10, bytes: 320, SLOAD: 2000, SSTORE: 100000, totalGas: 102000 },
+    { gasPrice: 30, slots: 11, bytes: 352, SLOAD: 2200, SSTORE: 110000, totalGas: 112200 },
+    { gasPrice: 30, slots: 12, bytes: 384, SLOAD: 2400, SSTORE: 120000, totalGas: 122400 },
+    { gasPrice: 30, slots: 13, bytes: 416, SLOAD: 2600, SSTORE: 130000, totalGas: 132600 },
+    { gasPrice: 30, slots: 14, bytes: 448, SLOAD: 2800, SSTORE: 140000, totalGas: 142800 },
+    { gasPrice: 30, slots: 15, bytes: 480, SLOAD: 3000, SSTORE: 150000, totalGas: 153000 },
+    { gasPrice: 30, slots: 16, bytes: 512, SLOAD: 3200, SSTORE: 160000, totalGas: 163200 },
+    { gasPrice: 40, slots: 1, bytes: 32, SLOAD: 200, SSTORE: 10000, totalGas: 30200 },
+    { gasPrice: 40, slots: 2, bytes: 64, SLOAD: 400, SSTORE: 20000, totalGas: 30400 },
+    { gasPrice: 40, slots: 3, bytes: 96, SLOAD: 600, SSTORE: 30000, totalGas: 30600 },
+    { gasPrice: 40, slots: 4, bytes: 128, SLOAD: 800, SSTORE: 40000, totalGas: 40200 },
+    { gasPrice: 40, slots: 5, bytes: 160, SLOAD: 1000, SSTORE: 50000, totalGas: 51000 },
+    { gasPrice: 40, slots: 6, bytes: 192, SLOAD: 1200, SSTORE: 60000, totalGas: 61200 },
+    { gasPrice: 40, slots: 7, bytes: 224, SLOAD: 1400, SSTORE: 70000, totalGas: 71400 },
+    { gasPrice: 40, slots: 8, bytes: 256, SLOAD: 1600, SSTORE: 80000, totalGas: 81600 },
+    { gasPrice: 40, slots: 9, bytes: 288, SLOAD: 1800, SSTORE: 90000, totalGas: 91800 },
+    { gasPrice: 40, slots: 10, bytes: 320, SLOAD: 2000, SSTORE: 100000, totalGas: 102000 },
+    { gasPrice: 40, slots: 11, bytes: 352, SLOAD: 2200, SSTORE: 110000, totalGas: 112200 },
+    { gasPrice: 40, slots: 12, bytes: 384, SLOAD: 2400, SSTORE: 120000, totalGas: 122400 },
+    { gasPrice: 40, slots: 13, bytes: 416, SLOAD: 2600, SSTORE: 130000, totalGas: 132600 },
+    { gasPrice: 40, slots: 14, bytes: 448, SLOAD: 2800, SSTORE: 140000, totalGas: 142800 },
+    { gasPrice: 40, slots: 15, bytes: 480, SLOAD: 3000, SSTORE: 150000, totalGas: 153000 },
+    { gasPrice: 40, slots: 16, bytes: 512, SLOAD: 3200, SSTORE: 160000, totalGas: 163200 },
+    { gasPrice: 50, slots: 1, bytes: 32, SLOAD: 200, SSTORE: 10000, totalGas: 30200 },
+    { gasPrice: 50, slots: 2, bytes: 64, SLOAD: 400, SSTORE: 20000, totalGas: 30400 },
+    { gasPrice: 50, slots: 3, bytes: 96, SLOAD: 600, SSTORE: 30000, totalGas: 30600 },
+    { gasPrice: 50, slots: 4, bytes: 128, SLOAD: 800, SSTORE: 40000, totalGas: 40200 },
+    { gasPrice: 50, slots: 5, bytes: 160, SLOAD: 1000, SSTORE: 50000, totalGas: 51000 },
+    { gasPrice: 50, slots: 6, bytes: 192, SLOAD: 1200, SSTORE: 60000, totalGas: 61200 },
+    { gasPrice: 50, slots: 7, bytes: 224, SLOAD: 1400, SSTORE: 70000, totalGas: 71400 },
+    { gasPrice: 50, slots: 8, bytes: 256, SLOAD: 1600, SSTORE: 80000, totalGas: 81600 },
+    { gasPrice: 50, slots: 9, bytes: 288, SLOAD: 1800, SSTORE: 90000, totalGas: 91800 },
+    { gasPrice: 50, slots: 10, bytes: 320, SLOAD: 2000, SSTORE: 100000, totalGas: 102000 },
+    { gasPrice: 50, slots: 11, bytes: 352, SLOAD: 2200, SSTORE: 110000, totalGas: 112200 },
+    { gasPrice: 50, slots: 12, bytes: 384, SLOAD: 2400, SSTORE: 120000, totalGas: 122400 },
+    { gasPrice: 50, slots: 13, bytes: 416, SLOAD: 2600, SSTORE: 130000, totalGas: 132600 },
+    { gasPrice: 50, slots: 14, bytes: 448, SLOAD: 2800, SSTORE: 140000, totalGas: 142800 },
+    { gasPrice: 50, slots: 15, bytes: 480, SLOAD: 3000, SSTORE: 150000, totalGas: 153000 },
+    { gasPrice: 50, slots: 16, bytes: 512, SLOAD: 3200, SSTORE: 160000, totalGas: 163200 },
+
+            ];
+            
+            // Render the table with the data
+            renderTable(data);
+
+            loadingIndicator.style.display = 'none';
+        }
+
+        function renderTable(data) {
+    tableBody.innerHTML = '';
+    if (data.length === 0) {
+        tableBody.appendChild(noDataMessage);
+        return;
+    }
+    data.forEach((row, index) => {
+        const gasCostEth = row.totalGas * row.gasPrice / 1e9;
+        const gasCostUsd = gasCostEth * ethereumPrice;
+        const totalCostEth = row.totalGas * row.gasPrice / 1e18;
+
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>${row.gasPrice}</td>
+            <td>${gasCostUsd.toFixed(8)}</td>
+            <td>${gasCostEth.toFixed(8)}</td>
+            <td>${row.slots}</td>
+            <td>${row.bytes}</td>
+            <td>${row.SLOAD}</td>
+            <td>${row.SSTORE}</td>
+            <td>${row.totalGas}</td>
+            <td>${totalCostEth.toFixed(8)}</td>
+        `;
+        if (selectedRow === index) {
+            newRow.classList.add('selected');
+        }
+        newRow.addEventListener('click', () => selectRow(index));
+        tableBody.appendChild(newRow);
+    });
+}
+
+
+        function selectRow(index) {
+            if (selectedRow === index) {
+                selectedRow = null;
+            } else {
+                selectedRow = index;
+            }
+            renderTable();
+        }
+
+        function filterTable() {
+            // Implement filtering if needed
+        }
+
+        function updateRowsPerPage() {
+            // Implement updating rows per page if needed
+        }
+
+        // Initial setup
+        fetchEthereumPrice();
+    </script>
+</body>
+</html>

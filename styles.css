@@ -1,0 +1,42 @@
+table {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: monospace;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f7fd;
+    color: #333;
+    border-bottom: 2px solid #ddd;
+    cursor: pointer;
+}
+
+tr:nth-child(even) {
+    background-color: #eaf4fd;
+}
+
+tr:hover {
+    background-color: #d2e4fc;
+}
+
+.loading {
+    display: none;
+}
+
+.no-data {
+    font-style: italic;
+    color: #666;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination select {
+    padding: 5px;
+    font-size: 16px;
+}
